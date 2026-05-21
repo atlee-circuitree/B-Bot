@@ -11,7 +11,7 @@ import frc.robot.Constants;
 public class KickUp extends SubsystemBase {
   
   public final TalonFX KickUpMotor;
-  +
+   
   /** Creates a new KickUp. */
   public KickUp() {
     KickUpMotor = new TalonFX(Constants.CAN_IDS.KickUp, "FRC 1599B")

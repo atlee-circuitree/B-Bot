@@ -18,6 +18,7 @@ public final class Constants {
 
     public static final int deployMotor = 1;
     public static final int feedIntakeMotor = 2;
+    public static final int KickUpMotor = 3;
 
   }
 
@@ -31,6 +32,7 @@ public final class Constants {
   public static class Intake {
 
     public static final double INTAKE_SPEED = 1.0;
+    public static final double SHOOT_SPEED = 1.0;
 
   }
 
