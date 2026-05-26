@@ -16,9 +16,14 @@ public final class Constants {
 
   public static class CAN_IDS {
 
-    public static final int deployMotor = 1;
-    public static final int feedIntakeMotor = 2;
-    public static final int KickUpMotor = 3;
+    public static final int feedIntakeMotor = 36;
+    public static final int KickUpMotorRight = 32;
+    public static final int KickUpMotorLeft = 33;
+    public static final int PivotMotor = 34;
+    public static final int RightShooter = 30;
+    public static final int LeftShooter = 31;
+
+    public static final int PivotEncoder = 3;
 
   }
 
@@ -32,8 +37,21 @@ public final class Constants {
   public static class Intake {
 
     public static final double INTAKE_SPEED = 1.0;
-    public static final double SHOOT_SPEED = 1.0;
+    public static final double DEPLOY_SLOT0_KP = 5.0;
+    public static final double DEPLOY_SLOT1_KP = 1.5;
 
+  }
+
+  public static class KickUp {
+
+     public static final double KickUpSpeed = 1.0;
+
+
+  }
+
+  public static class Shooter {
+
+    public static final double ShootSpeed = 1.0;
   }
 
 

@@ -10,15 +10,17 @@ import frc.robot.Constants;
 
 public class KickUp extends SubsystemBase {
   
-  public final TalonFX KickUpMotor;
+  public final TalonFX KickUpMotorRight;
+  public final TalonFX KickUpMotorLeft;
    
   /** Creates a new KickUp. */
   public KickUp() {
-    KickUpMotor = new TalonFX(Constants.CAN_IDS.KickUp, "FRC 1599B")
+    KickUpMotorLeft = new TalonFX(Constants.CAN_IDS.KickUpMotorLeft, "french fries");
+    KickUpMotorRight = new TalonFX(Constants.CAN_IDS.KickUpMotorRight, "jo mama");
   }
 
   public void shoot(){
-    KickUpMotor.set(-Constants.KickUp.SHOOT_SPEED);
+    KickUpMotorLeft.set(-Constants.KickUp.KickUpSpeed);
   }
 
   @Override

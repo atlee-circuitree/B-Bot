@@ -5,22 +5,31 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class Intake extends SubsystemBase {
 
   private final TalonFX feedMotor;
-  private final TalonFX deployMotor;
+  private final TalonFX PivotMotor;
   /** Creates a new Intake. */
 
  private final VoltageOut m_voltageOut = new VoltageOut(0);
 
+ 
+ private final StatusSignal<edu.wpi.first.units.measure.Angle> m_PivotPosition;
+
   public Intake() {
 
     feedMotor   = new TalonFX(Constants.CAN_IDS.feedIntakeMotor, "FRC 1599B");
-    deployMotor = new TalonFX(Constants.CAN_IDS.deployMotor,     "FRC 1599B");
+    PivotMotor = new TalonFX(Constants.CAN_IDS.PivotMotor, "FRC 1599B");
     
     Slot0Configs slot0ConfigsUp = new Slot0Configs();
     slot0ConfigsUp.kP = Constants.Intake.DEPLOY_SLOT0_KP;
@@ -31,6 +40,8 @@ public class Intake extends SubsystemBase {
     slot1ConfigsDown.kP = Constants.Intake.DEPLOY_SLOT1_KP;
     slot1ConfigsDown.kI = 0.0;
     slot1ConfigsDown.kD = 0.0;
+
+    m_PivotPosition = PivotMotor.getPosition();
 
 
   }
@@ -45,11 +56,21 @@ public void stopWheels() {
   }
   
    public void deployManual(double speed) {
-    deployMotor.set(speed);
+    PivotMotor.set(speed);
   }
 
   public void stopDeploy() {
-    deployMotor.set(0);
+    PivotMotor.set(0);
+  }
+
+  public void deployBrake() {
+    MotorOutputConfigs motorOutput = new MotorOutputConfigs();
+    motorOutput.NeutralMode = NeutralModeValue.Brake;
+    PivotMotor.getConfigurator().apply(motorOutput, 0.0);
+  }
+
+  public double getPivotEncoder() {
+    return m_PivotPosition.getValueAsDouble() + 1;
   }
 
 
