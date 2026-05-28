@@ -5,41 +5,35 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ManualDeploy extends Command {
+public class ShootInterrupt extends Command {
 
-  private final Intake intake;
-  private final double speed;
-  private final boolean brake;
-  /** Creates a new ManualDeploy. */
-  public ManualDeploy(Intake intake, double speed) {
-    this.intake = intake;
+  private Shooter shoot;
+  private double speed;
+  
+  /** Creates a new ShootInterrupt. */
+  public ShootInterrupt(Shooter shoot, double speed) {
     this.speed = speed;
-    this.brake = (speed < 0);
-    addRequirements(intake);
+    this.shoot = shoot;
+    addRequirements(shoot);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (brake){
-      intake.deployBrake();
-    }
+    shoot.spin(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    intake.deployManual(speed);
-  }
-
+ 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    intake.stopDeploy();
+  public void end(boolean interrupted)
+   {
+    shoot.stopShooter();
   }
 
   // Returns true when the command should end.

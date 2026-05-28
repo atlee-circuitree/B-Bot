@@ -7,8 +7,14 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.KickerUper;
+import frc.robot.commands.ManualDeploy;
+import frc.robot.commands.ShootInterrupt;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.KickUp;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -20,6 +26,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  private final CommandXboxController Player1 = new CommandXboxController(0);
+  private final CommandXboxController Player2 = new CommandXboxController(1);
+
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -43,12 +53,14 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
+   
+    Player1.x().whileTrue(new ParallelCommandGroup(
+      new ShootInterrupt(shoot, Constants.Shooter.ShootSpeedClose),
+      new KickerUper(kickUp KickUpickUp)));
+      Player1.a().whileTrue(new ManualDeploy(intake, Constants.Intake.DeploySpeed));
+      Player1.b().whileTrue(new ManualDeploy(intake, -Constants.Intake.DeploySpeed));
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   /**
@@ -60,4 +72,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
   }
+
+
+
 }

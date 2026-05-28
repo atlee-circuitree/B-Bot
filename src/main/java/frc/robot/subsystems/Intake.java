@@ -12,6 +12,7 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -19,6 +20,8 @@ public class Intake extends SubsystemBase {
 
   private final TalonFX feedMotor;
   private final TalonFX PivotMotor;
+  private final CANcoder PivotEncoder;
+
   /** Creates a new Intake. */
 
  private final VoltageOut m_voltageOut = new VoltageOut(0);
@@ -30,7 +33,8 @@ public class Intake extends SubsystemBase {
 
     feedMotor   = new TalonFX(Constants.CAN_IDS.feedIntakeMotor, "FRC 1599B");
     PivotMotor = new TalonFX(Constants.CAN_IDS.PivotMotor, "FRC 1599B");
-    
+    PivotEncoder = new CANcoder(Constants.CAN_IDS.PivotEncoder, "my bad");
+
     Slot0Configs slot0ConfigsUp = new Slot0Configs();
     slot0ConfigsUp.kP = Constants.Intake.DEPLOY_SLOT0_KP;
     slot0ConfigsUp.kI = 0.0;

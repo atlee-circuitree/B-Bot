@@ -20,7 +20,13 @@ public class KickUp extends SubsystemBase {
   }
 
   public void shoot(){
-    KickUpMotorLeft.set(-Constants.KickUp.KickUpSpeed);
+    KickUpMotorLeft.set(Constants.KickUp.KickUpSpeed);
+    KickUpMotorRight.set(Constants.KickUp.KickUpSpeed);
+  }
+
+  public void stop(){
+    KickUpMotorLeft.set(0);
+    KickUpMotorRight.set(0);
   }
 
   @Override

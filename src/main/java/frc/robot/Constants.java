@@ -39,7 +39,7 @@ public final class Constants {
     public static final double INTAKE_SPEED = 1.0;
     public static final double DEPLOY_SLOT0_KP = 5.0;
     public static final double DEPLOY_SLOT1_KP = 1.5;
-
+    public static final double DeploySpeed = 500000000000.0;
   }
 
   public static class KickUp {
@@ -52,6 +52,7 @@ public final class Constants {
   public static class Shooter {
 
     public static final double ShootSpeed = 1.0;
+    public static final double ShootSpeedClose = 55.0;
   }
 
 
