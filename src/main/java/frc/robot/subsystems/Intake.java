@@ -54,6 +54,10 @@ public void intake() {
     feedMotor.set(Constants.Intake.INTAKE_SPEED);
   }
 
+public void outtake() {
+    feedMotor.set(-Constants.Intake.INTAKE_SPEED);
+  }
+
 public void stopWheels() {
     feedMotor.setControl(m_voltageOut.withOutput(0));
   

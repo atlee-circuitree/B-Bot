@@ -53,6 +53,7 @@ public final class Constants {
 
     public static final double ShootSpeed = 1.0;
     public static final double ShootSpeedClose = 55.0;
+    public static final double ShootSpeedFar = 70.0;
   }
 
 

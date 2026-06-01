@@ -9,9 +9,12 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.KickerUper;
 import frc.robot.commands.ManualDeploy;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunOuttake;
 import frc.robot.commands.ShootInterrupt;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.KickUp;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -27,6 +30,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  private Intake intake;
+  private Shooter shoot;
+  private KickUp kickUp;
+
   private final CommandXboxController Player1 = new CommandXboxController(0);
   private final CommandXboxController Player2 = new CommandXboxController(1);
 
@@ -39,6 +46,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+
+    intake = new Intake();
+    shoot = new Shooter();
+    kickUp = new KickUp();
     configureBindings();
   }
 
@@ -56,9 +67,20 @@ public class RobotContainer {
    
     Player1.x().whileTrue(new ParallelCommandGroup(
       new ShootInterrupt(shoot, Constants.Shooter.ShootSpeedClose),
-      new KickerUper(kickUp KickUpickUp)));
-      Player1.a().whileTrue(new ManualDeploy(intake, Constants.Intake.DeploySpeed));
-      Player1.b().whileTrue(new ManualDeploy(intake, -Constants.Intake.DeploySpeed));
+      new KickerUper(kickUp)));
+
+    Player1.a().whileTrue(new ManualDeploy(intake, Constants.Intake.DeploySpeed));
+    Player1.b().whileTrue(new ManualDeploy(intake, -Constants.Intake.DeploySpeed));
+    Player1.leftTrigger().whileTrue(new RunIntake(intake));
+    Player1.rightTrigger().whileTrue(new RunOuttake(intake));
+
+
+    Player1.y().whileTrue(new ParallelCommandGroup(
+      new ShootInterrupt(shoot, Constants.Shooter.ShootSpeedFar),
+      new KickerUper(kickUp)));
+  
+    Player2.a().whileTrue(new KickerUper(kickUp));
+  
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
   }
