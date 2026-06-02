@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import frc.robot.generated.TunerConstants;
+import edu.wpi.first.math.geometry.Translation2d;
+import static edu.wpi.first.units.Units.*;
+
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -56,5 +61,19 @@ public final class Constants {
     public static final double ShootSpeedFar = 70.0;
   }
 
+  public static class Drive {
+   public static final double MAX_SPEED_MPS      = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+   /** Max angular rate (rad/s) — 0.75 rotations/sec, matches teleop drive default command. */
+   public static final double MAX_ANGULAR_RATE_RPS = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+
+   /** Fraction of max speed/rate applied as joystick deadband. */
+   public static final double DEADBAND_PERCENT   = 0.14;
+
+   // --- Speed scaling (used in drive default command) ---
+   /** Current speed divisor (1.0 = full speed). Increase for a slower mode. */
+   public static final double SPEED_DIVISOR      = 1.0;
+
+
+  }
 
 }

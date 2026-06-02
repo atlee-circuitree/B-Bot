@@ -13,6 +13,7 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.*;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -74,7 +75,7 @@ public class TunerConstants {
 
     // Theoretical free speed (m/s) at 12 V applied output;
     // This needs to be tuned to your individual robot
-    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(5.12);
+    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(5);
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
@@ -195,9 +196,9 @@ public class TunerConstants {
      * Creates a CommandSwerveDrivetrain instance.
      * This should only be called once in your robot program,.
      */
-    public static CommandSwerveDrivetrain createDrivetrain() {
+    public static CommandSwerveDrivetrain createDrivetrain(Field2d field2d) {
         return new CommandSwerveDrivetrain(
-            DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight
+            field2d, DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight
         );
     }
 

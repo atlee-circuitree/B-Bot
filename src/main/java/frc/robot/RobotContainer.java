@@ -12,13 +12,21 @@ import frc.robot.commands.ManualDeploy;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunOuttake;
 import frc.robot.commands.ShootInterrupt;
+import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.KickUp;
+
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -34,6 +42,20 @@ public class RobotContainer {
   private Shooter shoot;
   private KickUp kickUp;
 
+  private static final Field2d field = new Field2d();
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain(field);
+
+  private final double MaxSpeed = Constants.Drive.MAX_SPEED_MPS / Constants.Drive.SPEED_DIVISOR;
+  private final double MaxAngularRate = Constants.Drive.MAX_ANGULAR_RATE_RPS;
+
+
+  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * Constants.Drive.DEADBAND_PERCENT).withRotationalDeadband(MaxAngularRate * Constants.Drive.DEADBAND_PERCENT)
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    private final Telemetry logger = new Telemetry(MaxSpeed);
+
   private final CommandXboxController Player1 = new CommandXboxController(0);
   private final CommandXboxController Player2 = new CommandXboxController(1);
 
@@ -42,6 +64,9 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -53,6 +78,40 @@ public class RobotContainer {
     configureBindings();
   }
 
+
+  public void seedFieldOrient() {
+        drivetrain.seedFieldCentric();
+
+
+    }
+
+    public double getLeftY()
+    {
+        double player1 = Player1.getLeftY();
+        double player2 = Player2.getLeftY();
+
+        double max = Math.abs(player1) > Math.abs(player2) ? player1 : player2;
+        return max;
+    }
+
+    public double getLeftX()
+    {
+        double player1 = Player1.getLeftX();
+        double player2 = Player2.getLeftX();
+
+        double max = Math.abs(player1) > Math.abs(player2) ? player1 : player2;
+        return max;
+    }
+
+    public double getRightX()
+    {
+        double player1 = Player1.getRightX();
+        double player2 = Player2.getRightX();
+
+        double max = Math.abs(player1) > Math.abs(player2) ? player1 : player2;
+        return max;
+        }
+    
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -63,6 +122,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    configureDrivetrain();
+ drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() -> 
+                drive.withVelocityX(-(getLeftY()) * ((Constants.Drive.MAX_SPEED_MPS) / Constants.Drive.SPEED_DIVISOR)) // Drive forward with negative Y (forward)
+                    .withVelocityY(-(getLeftX()) * ((Constants.Drive.MAX_SPEED_MPS) / Constants.Drive.SPEED_DIVISOR)) // Drive left with negative X (left)
+                    .withRotationalRate(-(getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
    
     Player1.x().whileTrue(new ParallelCommandGroup(
@@ -95,6 +164,17 @@ public class RobotContainer {
     return Autos.exampleAuto(m_exampleSubsystem);
   }
 
+ private void configureDrivetrain() {
+        // Idle while the robot is disabled. This ensures the configured
+        // neutral mode is applied to the drive motors while disabled.
+        final var idle = new SwerveRequest.Idle();
+        RobotModeTriggers.disabled().whileTrue(
+            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
+        );
+        
+
+        drivetrain.registerTelemetry(logger::telemeterize);
+    }
 
 
 }

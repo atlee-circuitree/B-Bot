@@ -15,8 +15,8 @@ public class KickUp extends SubsystemBase {
    
   /** Creates a new KickUp. */
   public KickUp() {
-    KickUpMotorLeft = new TalonFX(Constants.CAN_IDS.KickUpMotorLeft, "french fries");
-    KickUpMotorRight = new TalonFX(Constants.CAN_IDS.KickUpMotorRight, "jo mama");
+    KickUpMotorLeft = new TalonFX(Constants.CAN_IDS.KickUpMotorLeft, "FRC B-bot");
+    KickUpMotorRight = new TalonFX(Constants.CAN_IDS.KickUpMotorRight, "FRC B-bot");
   }
 
   public void shoot(){

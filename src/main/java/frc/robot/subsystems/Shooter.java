@@ -30,8 +30,8 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter() {
 
-    RightShooter = new TalonFX(Constants.CAN_IDS.RightShooter, "jo mama");
-    LeftShooter = new TalonFX(Constants.CAN_IDS.LeftShooter, "jo mama");
+    RightShooter = new TalonFX(Constants.CAN_IDS.RightShooter, "FRC B-bot");
+    LeftShooter = new TalonFX(Constants.CAN_IDS.LeftShooter, "FRC B-bot");
 
     m_LeftShooterVelocity  = LeftShooter.getVelocity();
     m_RightShooterVelocity = RightShooter.getVelocity();

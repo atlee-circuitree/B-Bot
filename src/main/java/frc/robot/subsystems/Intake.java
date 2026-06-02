@@ -31,9 +31,9 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
 
-    feedMotor   = new TalonFX(Constants.CAN_IDS.feedIntakeMotor, "FRC 1599B");
-    PivotMotor = new TalonFX(Constants.CAN_IDS.PivotMotor, "FRC 1599B");
-    PivotEncoder = new CANcoder(Constants.CAN_IDS.PivotEncoder, "my bad");
+    feedMotor   = new TalonFX(Constants.CAN_IDS.feedIntakeMotor, "FRC B-bot");
+    PivotMotor = new TalonFX(Constants.CAN_IDS.PivotMotor, "FRC B-bot");
+    PivotEncoder = new CANcoder(Constants.CAN_IDS.PivotEncoder, "FRC B-bot");
 
     Slot0Configs slot0ConfigsUp = new Slot0Configs();
     slot0ConfigsUp.kP = Constants.Intake.DEPLOY_SLOT0_KP;
