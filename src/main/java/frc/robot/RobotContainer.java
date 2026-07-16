@@ -137,6 +137,8 @@ public class RobotContainer {
     Player1.x().whileTrue(new ParallelCommandGroup(
       new ShootInterrupt(shoot, Constants.Shooter.ShootSpeedClose),
       new KickerUper(kickUp)));
+  
+    Player1.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
     Player1.a().whileTrue(new ManualDeploy(intake, Constants.Intake.DeploySpeed));
     Player1.b().whileTrue(new ManualDeploy(intake, -Constants.Intake.DeploySpeed));
